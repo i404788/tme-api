@@ -1,5 +1,5 @@
 [project]
-name = "tmeapi"
+name = "tme-eu"
 version = "0.1.0"
 description = "Api for TME.eu"
 readme = "README.md"
