@@ -1,14 +1,11 @@
-from tmeapi.models import ErrorValidation
-from tmeapi.models import ErrorSignature
-from tmeapi import TmeApi, Ok
+from tmeapi import TmeApi, Ok, ErrorValidation, ErrorSignature
 import os
 
 api = TmeApi(os.environ["TME_KEY"].strip(), os.environ["TME_APP_SECRET"].strip())
 
-# print(api.autocomplete("555"))
-# print(api.get_prices(["EL-MAKR04120PA-TC"]))
-# print(api.get_prices_and_stock(["EL-MAKR04120PA-TC"]))
-
+print(api.autocomplete("555"))
+print(api.get_prices(["EL-MAKR04120PA-TC"]))
+print(api.get_prices_and_stock(["EL-MAKR04120PA-TC"]))
 
 resp = api.get_categories(tree=True, category_id=112140)
 match resp:
