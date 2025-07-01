@@ -84,7 +84,7 @@ class GetPricesData(Cursorable):
                 "Currency": self.Currency,
                 "Language": self.Language,
                 "PriceType": self.PriceType,
-                "ProductList": [*self.ProductList, other.ProductList],
+                "ProductList": [*self.ProductList, *other.ProductList],
             }
         )
 
@@ -110,7 +110,7 @@ class GetPricesAndStocksData(Cursorable):
                 "Currency": self.Currency,
                 "Language": self.Language,
                 "PriceType": self.PriceType,
-                "ProductList": [*self.ProductList, other.ProductList],
+                "ProductList": [*self.ProductList, *other.ProductList],
             }
         )
 

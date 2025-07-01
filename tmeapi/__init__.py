@@ -18,26 +18,31 @@ from .models import Ok, GetPricesData, ErrorSignature, ErrorValidation, GetPrice
 def sign_body(action: str, params: dict[str, Any], token: str, app_secret: str):
     api_url = "https://api.tme.eu/" + action + ".json"
 
-    # Flatten lists into urlencoding format
-    for key in list(params):
-        if isinstance(params[key], list):
-            for i, v in enumerate(params[key]):
-                params[f"{key}[{i}]"] = v
-            del params[key]
-
     params["Token"] = token
 
-    params = OrderedDict(sorted(params.items()))
+    # NOTE: the params need to be alphanumerically and then lexically sorted
+    #  this makes our life absolute pain since indexes >10 do not have equivalent sortings in both cases
+    #  so for arrays we need to seperately lexically sort them
+    param_list: list[tuple[str, str | list[str]]] = list(sorted(params.items()))
 
-    encoded_params = urlencode(params, False)
+    # Flatten lists into urlencoding format
+    for pi in range(len(param_list)):
+        if isinstance(param_list[pi][1], list):
+            contents = param_list.pop(pi)
+            key = contents[0]
+            for i, v in enumerate(contents[1]):
+                param_list.insert(pi + i, (f"{key}[{i}]", v))
+
+    encoded_params = urlencode(param_list, False)
     signature_base = "POST" + "&" + quote(api_url, "") + "&" + quote(encoded_params, "")
 
     api_signature = base64.encodebytes(
         hmac.new(app_secret.encode(), signature_base.encode(), hashlib.sha1).digest()
     ).rstrip()
-    params["ApiSignature"] = api_signature
 
-    return api_url, urlencode(params)
+    param_list.append(("ApiSignature", api_signature))
+
+    return api_url, urlencode(param_list)
 
 
 class TmeApi:
