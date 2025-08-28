@@ -23,6 +23,9 @@ def sign_body(action: str, params: dict[str, Any], token: str, app_secret: str):
     # NOTE: the params need to be alphanumerically and then lexically sorted
     #  this makes our life absolute pain since indexes >10 do not have equivalent sortings in both cases
     #  so for arrays we need to seperately lexically sort them
+    #
+    # UPDATE: TME suggests padding the indexes, i.e. `01`, `02` ..., `10`, ... `99`,
+    #   such that lexical & alphanumeric sortings are equivalent
     param_list: list[tuple[str, str | list[str]]] = list(sorted(params.items()))
 
     # Flatten lists into urlencoding format

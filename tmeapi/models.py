@@ -10,7 +10,7 @@ DataT = TypeVar("DataT")
 Currencies = Literal["EUR"]
 Languages = Literal["EN"]
 PriceTypes = Literal["NET", "GROSS"]
-Units = Literal["pcs"]
+Units = Literal["pcs", "m", "rol"]
 VatType = Literal["VAT"]
 
 
